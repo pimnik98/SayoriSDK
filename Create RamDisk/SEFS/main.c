@@ -169,13 +169,15 @@ int dirPath(char* path){
         off += headers[cf+i].length;
         headers[cf+i].offset = off;
         headers[cf+i].magic = 0xBF;
+        strcpy(headers[cf+i].name, dirs[(i)]);
         printf("[*] [%d] Папка (%d): %s \n",cf+i,i,dirs[(i)]);
     }
+    cf += dirs_count;
     FILE *wstream = fopen("./sayori_sefs.img", "w");
     unsigned char *data = (unsigned char *)malloc(off);
     fwrite(&cf, sizeof(int), 1, wstream);
     fwrite(headers, sizeof(struct sefs_file_header), 2048, wstream);
-
+    cf -= dirs_count;
     for(int i = 0; i < cf; i++){
 
         char files[128] = {0};
@@ -244,6 +246,7 @@ int main(int argc, char **argv){
         off += headers[nheaders+i].length;
         headers[nheaders+i].offset = off;
         headers[nheaders+i].magic = 0xBF;
+        strcpy(headers[nheaders+i].name, dirs[(i)]);
         printf("Индекс: %d\n",(nheaders+i));
         printf("\t * Вес: %d kb\n",(headers[nheaders+i].length)/1024);
         printf("\t * Папка: [%d] %s\n",(i),dirs[(i)]);
