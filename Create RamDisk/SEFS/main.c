@@ -10,15 +10,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+/* 64-bit types */
+typedef	unsigned long long	uint64_t;
+typedef	unsigned int	uint32_t;
+typedef	unsigned char	uint8_t;
 struct sefs_file_header
 {
-    int index;                      ///< Индекс
-    unsigned char magic;            ///< Магическое число для проверки ошибок.
-    char name[128];                 ///< Имя файла
-    unsigned char offset;           ///< Смещение в sefs, указывающее откуда начинается файл.
-    unsigned int length;            ///< Длина файла
-    int types;                      ///< Тип (0 - файл/1 - Папка)
-    int parentDir;                  ///< Родительская папка (0 - значит root)
+   uint8_t index;             ///< Индекс
+   uint32_t magic;       ///< Магическое число для проверки ошибок.
+   char name[128];            ///< Имя файла
+   uint32_t offset;           ///< Смещение в sefs, указывающее откуда начинается файл.
+   uint32_t length;           ///< Длина файла
+   uint8_t types;             ///< Тип (0 - файл/1 - Папка)
+   uint8_t parentDir;         ///< Родительская папка (0 - значит root)
 };
 
 char dirs[2048][128];
