@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <errno.h>
+
 /* 64-bit types */
 typedef	unsigned long long	uint64_t;
 typedef	unsigned int	uint32_t;
@@ -65,6 +67,7 @@ void fileWrite(char* name, char* path, char* vpath){
     }
     char file[128] = {0};
     strcpy(file,path);
+    strcat(file,"/");
     strcat(file,name);
     int i = cf;
     headers[i].index = i;
@@ -74,7 +77,7 @@ void fileWrite(char* name, char* path, char* vpath){
     headers[i].offset = off;
     FILE *stream = fopen(file, "r");
     if(stream == 0){
-        printf("[!] Файл проигнорирован: %s%s (404)\n",vpath,name);
+        printf("[!] Файл проигнорирован: %s => %s%s (404 errno=%d)\n", file, vpath, name, errno);
         return;
     }
     fseek(stream, 0, SEEK_END);
