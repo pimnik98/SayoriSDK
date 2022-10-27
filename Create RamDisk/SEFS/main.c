@@ -34,23 +34,38 @@ struct sefs_file_header headers[2048];
 unsigned int off = sizeof(struct sefs_file_header) * 2048 + sizeof(int);
 char sl[2] = "/\0";
 char folder[128] = {0};
+int indDir[128] = {0};
+
+int __regDir(char* path){
+    for(int i = 0;i < 2048; i++){
+        if (strcmp(path,dirs[i]) == 0){
+            return i;
+        }
+    }
+    strcpy(dirs[dirs_count], path);
+    dirs_count++;
+    return (dirs_count-1);
+}
 
 /**
  * @brief Регистрация папки
  *
  * @param char* dir - Полный путь к папке
+ * @param char* dir - Старый путь к папке
  *
  * @return int - Индекс папки
  */
-int regDir(char* dir){
-    for(int i = 0;i < 2048; i++){
-        if (strcmp(dir,dirs[i]) == 0){
-            return i;
-        }
+int regDir(char* dir,char* odir){
+    int Index   = __regDir(dir);
+    int Index2  = __regDir(odir);
+    if (Index != Index2){
+        printf("[regDir] Dir: %s | Old: %s\n",dir,odir);
+        printf("[*] regDir\n");
+        printf("|-- [%d] %s\n",Index2,odir);
+        printf("  |-- [%d] %s\n",Index,dir);
+        indDir[Index] = Index2;
     }
-    strcpy(dirs[dirs_count], dir);
-    dirs_count++;
-    return (dirs_count-1);
+    return Index;
 }
 
 /**
@@ -72,7 +87,7 @@ void fileWrite(char* name, char* path, char* vpath){
     int i = cf;
     headers[i].index = i;
     headers[i].types = 0;
-    headers[i].parentDir = regDir(vpath);
+    headers[i].parentDir = regDir(vpath,vpath);
     strcpy(headers[i].name, name);
     headers[i].offset = off;
     FILE *stream = fopen(file, "r");
@@ -95,14 +110,21 @@ void fileWrite(char* name, char* path, char* vpath){
  * @param char* path - Старый путь
  * @param char* newpath - Новый путь
  */
-void rDir(char* path,char* newpath){
+void rDir(char* path,char* newpath,char* spath){
     char file[128] = {0};
     strcpy(file,folder);
     strcat(file,newpath);
+
     if (cf > 2048){
         printf("[!] Папка `%s` пропущена из-за лимита\n",newpath);
         return;
     }
+    printf("\n[rDir]\n");
+    printf("|-- Path: %s\n",path);
+    printf("|-- New: %s\n",newpath);
+    printf("|-- Complete: %s\n",file);
+    printf("|-- sPath: %s\n\n",spath);
+    regDir(newpath,spath);
     //printf("\t\t Path: %s | New: %s | Complete: %s\n",path,newpath,file);
     DIR *dir;
     struct dirent *de;
@@ -119,7 +141,7 @@ void rDir(char* path,char* newpath){
         strcat(fp,de->d_name);          ///< Дополняем имя папки
         if (de->d_type == 4){
             strcat(fp,sl);              ///< Дописываем флеш
-            rDir(file,fp);
+            rDir(file,fp,newpath);
         } else if (de->d_type == 8){
             fileWrite(de->d_name,file,newpath);
         }
@@ -136,7 +158,7 @@ void rDir(char* path,char* newpath){
  */
 int dirPath(char* path){
     strcpy(folder,path);
-    regDir("/");
+    regDir("/","/");
     char file[128] = {0};
     strcpy(file,path);
     strcat(file,sl);
@@ -157,7 +179,8 @@ int dirPath(char* path){
         strcat(fp,de->d_name);      ///< Дополняем имя папки
         if (de->d_type == 4){
             strcat(fp,sl);          ///< Дописываем флеш
-            rDir(path,fp);
+            regDir(fp,"/");
+            rDir(path,fp,"/");
             //printf("\t Путь: %s -> %s\n",path,fp);
         } else if (de->d_type == 8){
             fileWrite(de->d_name,path,"/");
@@ -227,10 +250,10 @@ int main(int argc, char **argv){
         headers[i].index = i;
         printf("Индекс: %d\n",i);
         printf("\t * Файл: `%s` -> `%s`\n",argv[i*3+1], argv[i*3+2]);
-        printf("\t * Папка: [%d] `%s`\n",regDir(argv[i*3+3]),argv[i*3+3]);
+        printf("\t * Папка: [%d] `%s`\n",regDir(argv[i*3+3],"/null/"),argv[i*3+3]);
         printf("\t * Позиция: 0x%x\n",off);
         headers[i].types = 0;
-        headers[i].parentDir = regDir(argv[i*3+3]);
+        headers[i].parentDir = regDir(argv[i*3+3],"/null/");
         strcpy(headers[i].name, argv[i*3+2]);
         headers[i].offset = off;
         FILE *stream = fopen(argv[i*3+1], "r");
