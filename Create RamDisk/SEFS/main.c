@@ -257,10 +257,18 @@ int dirPath(char* path){
  * @return int - Результат работы программы
  */
 int main(int argc, char **argv){
-    printf("SayoriOS SDK - Create RamDisk (SEFS)\n");
+    printf("SayoriOS SDK - Create RamDisk (SEFS)\n\n");
     if (argc > 1 && strcmp(argv[1],"--dir") == 0){
         return dirPath(argv[2]);
     }
-
+    printf("To use the program, specify a folder to scan.\n");
+    printf("Example:\n");
+    printf("  %s --dir ./initrd/ - %s\n",argv[0],"All files will be added from the initrd folder.");
+    printf("\n");
+    printf("The authors:\n");
+    printf("* The guys from the SayoriOS team:\n");
+    printf("  * pimnik98 \n");
+    printf("  * NDRAEY \n");
+    printf("\n");
     return 0;
 }
