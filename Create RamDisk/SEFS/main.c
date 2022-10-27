@@ -59,10 +59,10 @@ int regDir(char* dir,char* odir){
     int Index   = __regDir(dir);
     int Index2  = __regDir(odir);
     if (Index != Index2){
-        printf("[regDir] Dir: %s | Old: %s\n",dir,odir);
-        printf("[*] regDir\n");
-        printf("|-- [%d] %s\n",Index2,odir);
-        printf("  |-- [%d] %s\n\n",Index,dir);
+        //printf("[regDir] Dir: %s | Old: %s\n",dir,odir);
+        //printf("[*] regDir\n");
+        //printf("|-- [%d] %s\n",Index2,odir);
+        //printf("  |-- [%d] %s\n\n",Index,dir);
         indDir[Index] = Index2;
     }
     return Index;
@@ -76,8 +76,10 @@ int regDir(char* dir,char* odir){
  * @param char* vpath - Виртуальный путь
  */
 void fileWrite(char* name, char* path, char* vpath){
+    printf("| |-- [File] %s%s\n",vpath,name);
     if (cf > 2048){
-        printf("[!] File ignored: %s%s (Limit)\n",vpath,name);
+        printf("| | |-- [X] [ERROR] %s\n","File limit exceeded");
+        printf("| |\n");
         return;
     }
     char file[128] = {0};
@@ -92,16 +94,22 @@ void fileWrite(char* name, char* path, char* vpath){
     headers[i].offset = off;
     FILE *stream = fopen(file, "r");
     if(stream == 0){
-        printf("[!] File ignored: %s => %s%s (404 errno=%d)\n", file, vpath, name, errno);
+        printf("| | |-- [X] [ERROR] [%d] %s\n",errno,"File no found");
+        printf("| |\n");
         return;
     }
     fseek(stream, 0, SEEK_END);
     headers[i].length = ftell(stream);
-    printf("[*] [%d] File: %s%s (%d kb) \n",i,vpath,name,(headers[i].length)/1024);
+    printf("| | |-- Index: %d\n",cf);
+    printf("| | |-- Size: %d %s\n",(headers[i].length > 1024?
+        (headers[i].length/1024):headers[i].length),
+        (headers[i].length > 1024?"kb":"byte")
+    );
     off += headers[i].length;
     fclose(stream);
     headers[i].magic = 0xBF;
     cf++;
+    printf("| |\n");
 }
 
 /**
@@ -119,11 +127,11 @@ void rDir(char* path,char* newpath,char* spath){
         printf("[!] Folder `%s` skipped due to limit\n",newpath);
         return;
     }
-    printf("\n[rDir]\n");
-    printf("|-- Path: %s\n",path);
-    printf("|-- New: %s\n",newpath);
-    printf("|-- Complete: %s\n",file);
-    printf("|-- sPath: %s\n\n",spath);
+    //printf("\n[rDir]\n");
+    //printf("|-- Path: %s\n",path);
+    //printf("|-- New: %s\n",newpath);
+    //printf("|-- Complete: %s\n",file);
+    //printf("|-- sPath: %s\n\n",spath);
     regDir(newpath,spath);
     //printf("\t\t Path: %s | New: %s | Complete: %s\n",path,newpath,file);
     DIR *dir;
@@ -163,6 +171,7 @@ int dirPath(char* path){
     strcpy(file,path);
     strcat(file,sl);
     printf("[!] Folder scan mode set...\n");
+    printf("| [Files]\n");
     //printf("Путь: %s\n",file);
     DIR *dir;
     struct dirent *de;
@@ -191,6 +200,7 @@ int dirPath(char* path){
         printf("[!] [Error] Sorry, but the limit (2048) is full, choose a directory with fewer files.\n");
         return -1;
     }
+    printf("| [Folder]\n");
     for(int i = 0; i < dirs_count;i++){
 
         headers[cf+i].index = (cf+i);
@@ -199,8 +209,14 @@ int dirPath(char* path){
         off += headers[cf+i].length;
         headers[cf+i].offset = off;
         headers[cf+i].magic = 0xBF;
+        headers[cf+i].parentDir = indDir[i];
         strcpy(headers[cf+i].name, dirs[(i)]);
-        printf("[*] [%d] Folder (%d): %s \n",cf+i,i,dirs[(i)]);
+        headers[cf+i].parentDir = indDir[i];
+        printf("| |-- [Folder] %s\n",dirs[(i)]);
+        printf("| | |-- Local index: %d\n",i);
+        printf("| | |-- Global index: %d\n",cf+i);
+        printf("| | |-- List path: %s\n",dirs[(i)]);
+        printf("| |\n");
     }
     cf += dirs_count;
     FILE *wstream = fopen("./sayori_sefs.img", "w");
@@ -208,13 +224,13 @@ int dirPath(char* path){
     fwrite(&cf, sizeof(int), 1, wstream);
     fwrite(headers, sizeof(struct sefs_file_header), 2048, wstream);
     cf -= dirs_count;
+    printf("|-- [Write files]\n");
     for(int i = 0; i < cf; i++){
-
         char files[128] = {0};
         strcpy(files,path);
         strcat(files,dirs[headers[i].parentDir]);
         strcat(files,headers[i].name);
-        printf("[W] Write file: %s\n",files);
+        printf("| |-- %s\n",files);
         if (headers[i].types == 1){
             continue;
         }
