@@ -261,60 +261,6 @@ int main(int argc, char **argv){
     if (argc > 1 && strcmp(argv[1],"--dir") == 0){
         return dirPath(argv[2]);
     }
-    int nheaders = (argc-1)/3;
-    printf("Header Size: %d\n", (int) sizeof(struct sefs_file_header));
-    printf("Start writing files (%d)...\n",nheaders);
-    for(int i = 0; i < nheaders; i++){
-        headers[i].index = i;
-        printf("Index: %d\n",i);
-        printf("\t * File: `%s` -> `%s`\n",argv[i*3+1], argv[i*3+2]);
-        printf("\t * Folder: [%d] `%s`\n",regDir(argv[i*3+3],"/null/"),argv[i*3+3]);
-        printf("\t * Position: 0x%x\n",off);
-        headers[i].types = 0;
-        headers[i].parentDir = regDir(argv[i*3+3],"/null/");
-        strcpy(headers[i].name, argv[i*3+2]);
-        headers[i].offset = off;
-        FILE *stream = fopen(argv[i*3+1], "r");
-        if(stream == 0){
-            printf("[ERROR] File not found: %s\n", argv[i*2+1]);
-            return 1;
-        }
-        fseek(stream, 0, SEEK_END);
-        headers[i].length = ftell(stream);
-        printf("\t * Size: %d kb\n",(headers[i].length)/1024);
-        off += headers[i].length;
-        fclose(stream);
-        headers[i].magic = 0xBF;
-    }
-    printf("Start writing folders (%d)...\n",dirs_count);
-    for(int i = 0; i < dirs_count;i++){
-        headers[nheaders+i].index = (nheaders+i);
-        headers[nheaders+i].types = 1;
-        headers[nheaders+i].length = 64;
-        off += headers[nheaders+i].length;
-        headers[nheaders+i].offset = off;
-        headers[nheaders+i].magic = 0xBF;
-        strcpy(headers[nheaders+i].name, dirs[(i)]);
-        printf("Index: %d\n",(nheaders+i));
-        printf("\t * Weight: %d kb\n",(headers[nheaders+i].length)/1024);
-        printf("\t * Folder: [%d] %s\n",(i),dirs[(i)]);
-        printf("\t * Position: 0x%x\n",off);
-    }
-    FILE *wstream = fopen("./sayori_sefs.img", "w");
-    unsigned char *data = (unsigned char *)malloc(off);
-    fwrite(&nheaders, sizeof(int), 1, wstream);
-    fwrite(headers, sizeof(struct sefs_file_header), 64, wstream);
 
-    for(int i = 0; i < nheaders; i++){
-        FILE *stream = fopen(argv[i*3+1], "r");
-        unsigned char *buf = (unsigned char *)malloc(headers[i].length);
-        fread(buf, 1, headers[i].length, stream);
-        fwrite(buf, 1, headers[i].length, wstream);
-        fclose(stream);
-        free(buf);
-    }
-    fclose(wstream);
-    free(data);
-    printf("\n");
     return 0;
 }
