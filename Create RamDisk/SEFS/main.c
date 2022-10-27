@@ -211,11 +211,12 @@ int dirPath(char* path){
         headers[cf+i].magic = 0xBF;
         headers[cf+i].parentDir = indDir[i];
         strcpy(headers[cf+i].name, dirs[(i)]);
-        headers[cf+i].parentDir = indDir[i];
         printf("| |-- [Folder] %s\n",dirs[(i)]);
         printf("| | |-- Local index: %d\n",i);
         printf("| | |-- Global index: %d\n",cf+i);
-        printf("| | |-- List path: %s\n",dirs[(i)]);
+        printf("| | |-- Parent folder: \n");
+        printf("| | | |-- Index: %d\n",indDir[i]);
+        printf("| | | |-- Parent path: %s\n",dirs[indDir[i]]);
         printf("| |\n");
     }
     cf += dirs_count;
