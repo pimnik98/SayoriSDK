@@ -1,2 +1,2 @@
 all:
-	$(CC) main.c -o scrd
+	$(CC) main.c -O1 -Wall -o scrd
