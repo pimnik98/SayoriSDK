@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1665133055 source:/home/pimnik98/projects/Sayori/SRDC/main.c
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	<dirent.h>
-
