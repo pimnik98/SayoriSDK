@@ -34,23 +34,38 @@ struct sefs_file_header headers[2048];
 unsigned int off = sizeof(struct sefs_file_header) * 2048 + sizeof(int);
 char sl[2] = "/\0";
 char folder[128] = {0};
+int indDir[128] = {0};
+
+int __regDir(char* path){
+    for(int i = 0;i < 2048; i++){
+        if (strcmp(path,dirs[i]) == 0){
+            return i;
+        }
+    }
+    strcpy(dirs[dirs_count], path);
+    dirs_count++;
+    return (dirs_count-1);
+}
 
 /**
  * @brief Регистрация папки
  *
  * @param char* dir - Полный путь к папке
+ * @param char* dir - Старый путь к папке
  *
  * @return int - Индекс папки
  */
-int regDir(char* dir){
-    for(int i = 0;i < 2048; i++){
-        if (strcmp(dir,dirs[i]) == 0){
-            return i;
-        }
+int regDir(char* dir,char* odir){
+    int Index   = __regDir(dir);
+    int Index2  = __regDir(odir);
+    if (Index != Index2){
+        //printf("[regDir] Dir: %s | Old: %s\n",dir,odir);
+        //printf("[*] regDir\n");
+        //printf("|-- [%d] %s\n",Index2,odir);
+        //printf("  |-- [%d] %s\n\n",Index,dir);
+        indDir[Index] = Index2;
     }
-    strcpy(dirs[dirs_count], dir);
-    dirs_count++;
-    return (dirs_count-1);
+    return Index;
 }
 
 /**
@@ -61,8 +76,10 @@ int regDir(char* dir){
  * @param char* vpath - Виртуальный путь
  */
 void fileWrite(char* name, char* path, char* vpath){
+    printf("| |-- [File] %s%s\n",vpath,name);
     if (cf > 2048){
-        printf("[!] Файл проигнорирован: %s%s (Лимит)\n",vpath,name);
+        printf("| | |-- [X] [ERROR] %s\n","File limit exceeded");
+        printf("| |\n");
         return;
     }
     char file[128] = {0};
@@ -72,21 +89,27 @@ void fileWrite(char* name, char* path, char* vpath){
     int i = cf;
     headers[i].index = i;
     headers[i].types = 0;
-    headers[i].parentDir = regDir(vpath);
+    headers[i].parentDir = regDir(vpath,vpath);
     strcpy(headers[i].name, name);
     headers[i].offset = off;
     FILE *stream = fopen(file, "r");
     if(stream == 0){
-        printf("[!] Файл проигнорирован: %s => %s%s (404 errno=%d)\n", file, vpath, name, errno);
+        printf("| | |-- [X] [ERROR] [%d] %s\n",errno,"File no found");
+        printf("| |\n");
         return;
     }
     fseek(stream, 0, SEEK_END);
     headers[i].length = ftell(stream);
-    printf("[*] [%d] Файл: %s%s (%d байт) \n",i,vpath,name,headers[i].length);
+    printf("| | |-- Index: %d\n",cf);
+    printf("| | |-- Size: %d %s\n",(headers[i].length > 1024?
+        (headers[i].length/1024):headers[i].length),
+        (headers[i].length > 1024?"kb":"byte")
+    );
     off += headers[i].length;
     fclose(stream);
     headers[i].magic = 0xBF;
     cf++;
+    printf("| |\n");
 }
 
 /**
@@ -95,14 +118,21 @@ void fileWrite(char* name, char* path, char* vpath){
  * @param char* path - Старый путь
  * @param char* newpath - Новый путь
  */
-void rDir(char* path,char* newpath){
+void rDir(char* path,char* newpath,char* spath){
     char file[128] = {0};
     strcpy(file,folder);
     strcat(file,newpath);
+
     if (cf > 2048){
-        printf("[!] Папка `%s` пропущена из-за лимита\n",newpath);
+        printf("[!] Folder `%s` skipped due to limit\n",newpath);
         return;
     }
+    //printf("\n[rDir]\n");
+    //printf("|-- Path: %s\n",path);
+    //printf("|-- New: %s\n",newpath);
+    //printf("|-- Complete: %s\n",file);
+    //printf("|-- sPath: %s\n\n",spath);
+    regDir(newpath,spath);
     //printf("\t\t Path: %s | New: %s | Complete: %s\n",path,newpath,file);
     DIR *dir;
     struct dirent *de;
@@ -119,7 +149,7 @@ void rDir(char* path,char* newpath){
         strcat(fp,de->d_name);          ///< Дополняем имя папки
         if (de->d_type == 4){
             strcat(fp,sl);              ///< Дописываем флеш
-            rDir(file,fp);
+            rDir(file,fp,newpath);
         } else if (de->d_type == 8){
             fileWrite(de->d_name,file,newpath);
         }
@@ -136,11 +166,12 @@ void rDir(char* path,char* newpath){
  */
 int dirPath(char* path){
     strcpy(folder,path);
-    regDir("/");
+    regDir("/","/");
     char file[128] = {0};
     strcpy(file,path);
     strcat(file,sl);
-    printf("[!] Установлен режим сканирования папки...\n");
+    printf("[!] Folder scan mode set...\n");
+    printf("| [Files]\n");
     //printf("Путь: %s\n",file);
     DIR *dir;
     struct dirent *de;
@@ -157,7 +188,8 @@ int dirPath(char* path){
         strcat(fp,de->d_name);      ///< Дополняем имя папки
         if (de->d_type == 4){
             strcat(fp,sl);          ///< Дописываем флеш
-            rDir(path,fp);
+            regDir(fp,"/");
+            rDir(path,fp,"/");
             //printf("\t Путь: %s -> %s\n",path,fp);
         } else if (de->d_type == 8){
             fileWrite(de->d_name,path,"/");
@@ -165,9 +197,10 @@ int dirPath(char* path){
     }
     closedir(dir);
     if (cf+dirs_count > 2048){
-        printf("[!] [ОШИБКА] Извините, но лимит (2048) переполнен, выберите дирикторию с меньшим объемом файлов.\n");
+        printf("[!] [Error] Sorry, but the limit (2048) is full, choose a directory with fewer files.\n");
         return -1;
     }
+    printf("| [Folder]\n");
     for(int i = 0; i < dirs_count;i++){
 
         headers[cf+i].index = (cf+i);
@@ -176,8 +209,15 @@ int dirPath(char* path){
         off += headers[cf+i].length;
         headers[cf+i].offset = off;
         headers[cf+i].magic = 0xBF;
+        headers[cf+i].parentDir = indDir[i];
         strcpy(headers[cf+i].name, dirs[(i)]);
-        printf("[*] [%d] Папка (%d): %s \n",cf+i,i,dirs[(i)]);
+        printf("| |-- [Folder] %s\n",dirs[(i)]);
+        printf("| | |-- Local index: %d\n",i);
+        printf("| | |-- Global index: %d\n",cf+i);
+        printf("| | |-- Parent folder: \n");
+        printf("| | | |-- Index: %d\n",indDir[i]);
+        printf("| | | |-- Parent path: %s\n",dirs[indDir[i]]);
+        printf("| |\n");
     }
     cf += dirs_count;
     FILE *wstream = fopen("./sayori_sefs.img", "w");
@@ -185,13 +225,13 @@ int dirPath(char* path){
     fwrite(&cf, sizeof(int), 1, wstream);
     fwrite(headers, sizeof(struct sefs_file_header), 2048, wstream);
     cf -= dirs_count;
+    printf("|-- [Write files]\n");
     for(int i = 0; i < cf; i++){
-
         char files[128] = {0};
         strcpy(files,path);
         strcat(files,dirs[headers[i].parentDir]);
         strcat(files,headers[i].name);
-        printf("[W] Пишим в файл: %s\n",files);
+        printf("| |-- %s\n",files);
         if (headers[i].types == 1){
             continue;
         }
@@ -217,63 +257,18 @@ int dirPath(char* path){
  * @return int - Результат работы программы
  */
 int main(int argc, char **argv){
+    printf("SayoriOS SDK - Create RamDisk (SEFS)\n\n");
     if (argc > 1 && strcmp(argv[1],"--dir") == 0){
         return dirPath(argv[2]);
     }
-    int nheaders = (argc-1)/3;
-    printf("Размер заголовка: %d\n", (int) sizeof(struct sefs_file_header));
-    printf("Начинаем запись файлов (%d)...\n",nheaders);
-    for(int i = 0; i < nheaders; i++){
-        headers[i].index = i;
-        printf("Индекс: %d\n",i);
-        printf("\t * Файл: `%s` -> `%s`\n",argv[i*3+1], argv[i*3+2]);
-        printf("\t * Папка: [%d] `%s`\n",regDir(argv[i*3+3]),argv[i*3+3]);
-        printf("\t * Позиция: 0x%x\n",off);
-        headers[i].types = 0;
-        headers[i].parentDir = regDir(argv[i*3+3]);
-        strcpy(headers[i].name, argv[i*3+2]);
-        headers[i].offset = off;
-        FILE *stream = fopen(argv[i*3+1], "r");
-        if(stream == 0){
-            printf("ОШИБКА: Файл не найден: %s\n", argv[i*2+1]);
-            return 1;
-        }
-        fseek(stream, 0, SEEK_END);
-        headers[i].length = ftell(stream);
-        printf("\t * Вес: %d kb\n",(headers[i].length)/1024);
-        off += headers[i].length;
-        fclose(stream);
-        headers[i].magic = 0xBF;
-    }
-    printf("Начинаем запись папок (%d)...\n",dirs_count);
-    for(int i = 0; i < dirs_count;i++){
-        headers[nheaders+i].index = (nheaders+i);
-        headers[nheaders+i].types = 1;
-        headers[nheaders+i].length = 64;
-        off += headers[nheaders+i].length;
-        headers[nheaders+i].offset = off;
-        headers[nheaders+i].magic = 0xBF;
-        strcpy(headers[nheaders+i].name, dirs[(i)]);
-        printf("Индекс: %d\n",(nheaders+i));
-        printf("\t * Вес: %d kb\n",(headers[nheaders+i].length)/1024);
-        printf("\t * Папка: [%d] %s\n",(i),dirs[(i)]);
-        printf("\t * Позиция: 0x%x\n",off);
-    }
-    FILE *wstream = fopen("./sayori_sefs.img", "w");
-    unsigned char *data = (unsigned char *)malloc(off);
-    fwrite(&nheaders, sizeof(int), 1, wstream);
-    fwrite(headers, sizeof(struct sefs_file_header), 64, wstream);
-
-    for(int i = 0; i < nheaders; i++){
-        FILE *stream = fopen(argv[i*3+1], "r");
-        unsigned char *buf = (unsigned char *)malloc(headers[i].length);
-        fread(buf, 1, headers[i].length, stream);
-        fwrite(buf, 1, headers[i].length, wstream);
-        fclose(stream);
-        free(buf);
-    }
-    fclose(wstream);
-    free(data);
+    printf("To use the program, specify a folder to scan.\n");
+    printf("Example:\n");
+    printf("  %s --dir ./initrd/ - %s\n",argv[0],"All files will be added from the initrd folder.");
+    printf("\n");
+    printf("The authors:\n");
+    printf("* The guys from the SayoriOS team:\n");
+    printf("  * pimnik98 \n");
+    printf("  * NDRAEY \n");
     printf("\n");
     return 0;
 }
