@@ -6,4 +6,4 @@
 Для генерации файла `make`
 
 Пример использования:
-`png2duke "../../../Files/sayori.png" "../../../Files/Output/sayori.duke"`
+`png2duke "../../../Files/sayori.png"`
