@@ -82,7 +82,7 @@ void fileWrite(char* name, char* path, char* vpath){
     }
     fseek(stream, 0, SEEK_END);
     headers[i].length = ftell(stream);
-    printf("[*] [%d] Файл: %s%s (%d кб) \n",i,vpath,name,(headers[i].length)/1024);
+    printf("[*] [%d] Файл: %s%s (%d байт) \n",i,vpath,name,headers[i].length);
     off += headers[i].length;
     fclose(stream);
     headers[i].magic = 0xBF;
