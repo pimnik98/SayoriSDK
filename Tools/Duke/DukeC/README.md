@@ -7,7 +7,9 @@
 
 `sudo apt install libpng libpng-dev pkg-config`
 
-Для генерации файла `make`
+Для генерации файла
+
+`cc png2duke.c -lpng16 -o png2duke`
 
 Пример использования:
 
