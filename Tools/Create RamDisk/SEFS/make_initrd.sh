@@ -1,0 +1,2 @@
+make
+./scrd --dir initrd
