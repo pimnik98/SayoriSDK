@@ -26,7 +26,7 @@ _start:
 	mov ecx, 10
 	int 0x50
 
-
+	mov eax, 0
 	ret
 
 section .rodata
