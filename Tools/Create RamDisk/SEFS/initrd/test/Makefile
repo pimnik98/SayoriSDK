@@ -9,6 +9,6 @@ SOURCES= main.o
 
 all:$(SOURCES) link
 $(SOURCES): %.o : %.c
-	$(CC) $< $(CFLAGS) -o $@
+	$(CC) $< $(CFLAGS) -c -o $@
 link:
-	ld $(LDFLAGS) -o env $(SOURCES)
+	ld $(LDFLAGS) -o ../env $(SOURCES)
