@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @author Пиминов Никита (nikita.piminoff@yandex,ru)
+ * @author Пиминов Никита (nikita.piminoff@yandex.ru)
  * @brief SayoriOS SDK - ENV TEST APP
  * @version 0.1.0
  * @date 2022-06-12

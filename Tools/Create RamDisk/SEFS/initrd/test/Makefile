@@ -4,9 +4,11 @@ CFLAGS=-nostdlib -fno-builtin -fno-stack-protector -m32 -g -Iinclude/ -Wimplicit
 LDFLAGS=-Tlink.ld -m elf_i386
 # Флаги ассемблера
 ASFLAGS=--32
+
 SOURCES= main.o
+
 all:$(SOURCES) link
-build:
-	$(SOURCES) link
+$(SOURCES): %.o : %.c
+	$(CC) $< $(CFLAGS) -o $@
 link:
 	ld $(LDFLAGS) -o env $(SOURCES)
