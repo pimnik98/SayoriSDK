@@ -11,24 +11,9 @@ _start:
 	mov ecx, msg2
 	int 0x50
 
-	mov eax, 0x02
-	mov ebx, 0x00
-	mov ecx, 'H'
-	int 0x50
-	
-	mov eax, 0x02
-	mov ebx, 0x00
-	mov ecx, 'i'
-	int 0x50
-	
-	mov eax, 0x02
-	mov ebx, 0x00
-	mov ecx, 10
-	int 0x50
-
-	mov eax, 0
+	;mov eax, 0
 	ret
 
 section .rodata
-msg: db "Hello World!!!\n", 0
-msg2: db "Another day in paradise...\n", 0
+msg: db "Hello World!!!", 10, 0
+msg2: db "Another day in paradise...", 10, 0
