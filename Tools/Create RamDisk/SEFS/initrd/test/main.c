@@ -9,13 +9,14 @@
 
 #include <stdint.h>
 
+char* hello = "Hyvaa huomenta, Nikita Piminov!!!\n";
 
 int main(){
   asm volatile("int $0x50"
                 :
-                : "a"(0x02),
-                  "b"(0),
-                  "c"(1)
+                : "a"(0x02), // TTYCTL
+                  "b"(1),    // FUNCTION 1 - PUTS
+                  "c"(hello) // ADDRESS OF DATA
                 );
     return 1;
 }
