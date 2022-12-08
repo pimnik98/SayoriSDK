@@ -5,7 +5,7 @@ LDFLAGS=-Tlink.ld -m elf_i386
 # Флаги ассемблера
 ASFLAGS=--32
 
-SOURCES= main.o
+SOURCES= main.o base/base.o
 
 all: link
 

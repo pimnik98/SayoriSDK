@@ -8,15 +8,14 @@
  */
 
 #include <stdint.h>
+#include <env.h>
 
-char* hello = "Hyvaa huomenta, Nikita Piminov!!!\n";
+
+char* hello = "Huomenta myös sinulle, Drew Pavlenko, KIITOS TODELLA!!!\n";
 
 int main(){
-  asm volatile("int $0x50"
-                :
-                : "a"(0x02), // TTYCTL
-                  "b"(1),    // FUNCTION 1 - PUTS
-                  "c"(hello) // ADDRESS OF DATA
-                );
+    // Делаем настройку окружения
+    setEnv();
+    env_io(2,getEnv());
     return 1;
 }
