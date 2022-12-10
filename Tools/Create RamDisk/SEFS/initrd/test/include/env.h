@@ -18,6 +18,8 @@ struct env
   int Display_W;                        ///< Длина экрана
   int Display_H;                        ///< Высота экрана
   int Display_B;                        ///< Смещение экрана
+  int Display_P;                        ///< Глубина экрана
+  int Display_S;                        ///< Размер буфера
   int Ticks;                            ///< Количество текущих тиков
   uint64_t RAM_Install;                 ///< Установлено ОЗУ
   uint64_t RAM_Used;                    ///< Использовано ОЗУ

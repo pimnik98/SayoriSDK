@@ -11,11 +11,10 @@
 #include <env.h>
 
 
-char* hello = "Huomenta myös sinulle, Drew Pavlenko, KIITOS TODELLA!!!\n";
+//char* hello = "Huomenta myös sinulle, Drew Pavlenko, KIITOS TODELLA!!!\n";
 
 int main(){
     // Делаем настройку окружения
-    setEnv();
-    env_io(2,getEnv());
+    __BaseInit();
     return 1;
 }
