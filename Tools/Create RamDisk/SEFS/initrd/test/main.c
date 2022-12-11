@@ -13,8 +13,8 @@
 
 //char* hello = "Huomenta myös sinulle, Drew Pavlenko, KIITOS TODELLA!!!\n";
 
-int main(){
+int main(int argc, char* argv[]){
     // Делаем настройку окружения
-    __BaseInit();
+    __BaseInit(argc,argv);
     return 1;
 }
