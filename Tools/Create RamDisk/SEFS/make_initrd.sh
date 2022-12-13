@@ -6,6 +6,7 @@ PROJECT_PATH=`cd $BASEDIR; pwd`
 
 echo "--------- Building Programs"
 cd initrd && bash make.sh
+rm initrd/start.o
 echo "--------- Building Initrd Builder"
 cd "$PROJECT_PATH"
 make
