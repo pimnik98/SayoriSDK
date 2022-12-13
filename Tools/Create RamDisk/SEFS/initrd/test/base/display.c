@@ -16,6 +16,8 @@
  * @warning Рекомендуется вызывать только для базового модуля управления
  */
 void __DisplayInit(){
-    size_t DisplayAddr = env_io(0x01,0x00);
-    debug_io(0x03,DisplayAddr);
+    debug_io(0x01,"Display Init...");
+    int DisplayAddr = (int) env_io(0x01,0x00);
+    debug_io(0x00,DisplayAddr);
+    debug_io(0x02,DisplayAddr);
 }

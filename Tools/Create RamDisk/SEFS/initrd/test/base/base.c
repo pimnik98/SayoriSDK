@@ -24,15 +24,13 @@ void* env_io(void* Data1, void* Data2){
     return Data;
 }
 
-void* debug_io(void* Data1, void* Data2){
-    void* Data;
+void debug_io(void* Data1, void* Data2){
     asm volatile("int $0x50"
-                : "=a"(Data)
+                :
                 : "a"(0x04),
                   "b"(Data1),
                   "c"(Data2)
                 );
-    return Data;
 }
 
 
@@ -41,7 +39,13 @@ void* getEnv(){
 }
 
 
-void __BaseInit(){
+void __BaseInit(int argc, char* argv[]){
+    debug_io(0x01,"App ARGC:");
+    debug_io(0x00,argc);
+    for(int i=0;i<argc;i++){
+      debug_io(0x01,argv[i]);
+    }
     e = (struct env*) env_io(0x00,0x00);
+    debug_io(0x01,"Base Init...");
     __DisplayInit();
 }
