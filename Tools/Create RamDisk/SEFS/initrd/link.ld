@@ -15,7 +15,7 @@ SECTIONS {
     }
 
     .rodata : AT(ADDR(.rodata)) {
-        *(.rodata)
+        *(.rodata*)
         . = ALIGN(0x1000);
     }
 
