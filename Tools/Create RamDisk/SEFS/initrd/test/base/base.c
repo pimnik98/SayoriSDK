@@ -30,6 +30,12 @@ struct env* env_io(size_t Data1, size_t Data2) {
                  "c"(Data2));
   return Data;
   */
+  debug_io(1, "================");
+  debug_io(1, "Data1: ");
+  debug_io(2, Data1);
+  debug_io(1, "Data2: ");
+  debug_io(2, Data2);
+  debug_io(1, "================");
   debug_io(2, _syscall(0x03, Data1, Data2));
   return _syscall(0x03, Data1, Data2);
 }

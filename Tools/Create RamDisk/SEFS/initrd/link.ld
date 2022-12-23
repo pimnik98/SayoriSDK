@@ -1,5 +1,5 @@
 OUTPUT_FORMAT(elf32-i386)
-ENTRY(_start)
+ENTRY(main)
 
 SECTIONS {
     . = 0x10000000;
@@ -15,14 +15,17 @@ SECTIONS {
     }
 
     .rodata : AT(ADDR(.rodata)) {
-        *(.rodata*)
+        *(.rodata)
         . = ALIGN(0x1000);
     }
 
+	__bss_start = .;
     .bss : AT(ADDR(.bss)) {
         *(COMMON)
         *(.bss)
         *(.bootstrap_stack)
         . = ALIGN(0x1000);
     }
+
+	__bss_end = .;
 }
