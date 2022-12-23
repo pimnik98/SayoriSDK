@@ -1,19 +1,25 @@
 # Флаги компилятора языка C
-CFLAGS=-nostdlib -fno-builtin -fno-stack-protector -m32 -g -Iinclude/ -O0 -ffreestanding -w
+CFLAGS  = -nostdlib -fno-builtin -fno-stack-protector -m32 -g -Iinclude/ -O0 -ffreestanding -w
 # Флаги компоновщика
-LDFLAGS=-Tlink.ld -m elf_i386
+LDFLAGS = -Tlink.ld -m elf_i386
 # Флаги ассемблера
-ASFLAGS=--32
+ASFLAGS = --32
 
-SOURCES= main.o base/base.o base/display.o
+TARGETS = main.o draw.o
+SOURCES = base/base.o base/display.o base/draw.o
 
 all: link
 
 $(SOURCES): %.o : %.c
 	$(CC) $< $(CFLAGS) -c -o $@
 
-link: $(SOURCES)
+$(TARGETS): %.o : %.c
+	$(CC) $< $(CFLAGS) -c -o $@
+
+link: $(SOURCES) $(TARGETS)
 	touch "$(shell pwd)/../env"
 	rm "$(shell pwd)/../env"
-	ld $(LDFLAGS) -o  "$(shell pwd)/../env" $(SOURCES)
-
+	touch "$(shell pwd)/../draw"
+	rm "$(shell pwd)/../draw"
+	ld $(LDFLAGS) -o  "$(shell pwd)/../env" main.o $(SOURCES)
+	ld $(LDFLAGS) -o  "$(shell pwd)/../draw" draw.o $(SOURCES)

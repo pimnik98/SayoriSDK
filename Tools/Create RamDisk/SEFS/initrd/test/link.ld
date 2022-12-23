@@ -19,10 +19,13 @@ SECTIONS {
         . = ALIGN(0x1000);
     }
 
+	__bss_start = .;
     .bss : AT(ADDR(.bss)) {
         *(COMMON)
         *(.bss)
         *(.bootstrap_stack)
         . = ALIGN(0x1000);
     }
+
+	__bss_end = .;
 }

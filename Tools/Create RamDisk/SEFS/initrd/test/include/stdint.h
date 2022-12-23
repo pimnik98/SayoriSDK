@@ -32,6 +32,8 @@ typedef unsigned long long uint_fast64_t;
 typedef long long          intmax_t;
 typedef unsigned long long uintmax_t;
 
+typedef uint32_t           size_t;
+
 #define INT8_MIN           (-127i8 - 1)
 #define INT16_MIN          (-32767i16 - 1)
 #define INT32_MIN          (-2147483647i32 - 1)
