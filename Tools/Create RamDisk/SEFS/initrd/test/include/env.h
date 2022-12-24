@@ -1,6 +1,9 @@
 #pragma once
 
-struct env
+#include "stdlib.h"
+#include "stdint.h"
+
+typedef struct env
 {
   char Username[128];                   ///< Имя пользователя
   char Hostname[128];                   ///< Имя устройства
@@ -12,7 +15,7 @@ struct env
   int OS_VERSION_ENV;                   ///< Версия ENV
   int OS_VERSION_MAJOR;                 ///< Версия ядра
   int OS_VERSION_MINOR;                 ///< Пре-Релиз
-  int OS_VERSION_PATH;                  ///< Патч
+  int OS_VERSION_PATCH;                 ///< Патч
   uint64_t Link_Display;                ///< Ссылка на виртуальный экран
   uint64_t Link_Time;                   ///< Ссылка на время
   int Display_W;                        ///< Длина экрана
@@ -21,7 +24,9 @@ struct env
   int Display_P;                        ///< Глубина экрана
   int Display_S;                        ///< Размер буфера
   int Ticks;                            ///< Количество текущих тиков
-  uint64_t RAM_Install;                 ///< Установлено ОЗУ
+  uint64_t RAM_Installed;               ///< Установлено ОЗУ
   uint64_t RAM_Used;                    ///< Использовано ОЗУ
   uint64_t RAM_Free;                    ///< Свободно ОЗУ
-};
+} env_t;
+
+struct env* env_io(size_t, size_t);
