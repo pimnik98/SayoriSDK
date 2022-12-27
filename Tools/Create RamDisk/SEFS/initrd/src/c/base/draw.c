@@ -1,6 +1,17 @@
 #include "draw.h"
 #include "env.h"
 
+#define ENSURE_INIT() if(!draw_initialized) return;
+
+char draw_initialized = 0;
+
+env_t draw_env = {};
+
+void draw_init() {
+	env_io(0, &screen_data);
+	draw_initialized = 1;
+}
+
 void _draw_pixel(size_t x, size_t y, rgb_color color) {
 	// FIXME: Syscall method is very slow! Use direct framebuffer instead!!!
     _syscall(0x05, 0x00, &(screen_pixel) {
@@ -9,6 +20,8 @@ void _draw_pixel(size_t x, size_t y, rgb_color color) {
 }
 
 void draw_pixel(size_t x, size_t y, uint32_t color) {
+	ENSURE_INIT();
+	
     uint8_t* k = (uint8_t*)&color;
     _draw_pixel(x, y, (rgb_color) {
         k[2],
@@ -18,11 +31,10 @@ void draw_pixel(size_t x, size_t y, uint32_t color) {
 }
 
 void fill_screen(uint32_t color) {
-    struct env screen_data;
-    env_io(0, &screen_data);
-
-    for(int i = 0; i < screen_data.Display_H; i++) {
-        for(int j = 0; j < screen_data.Display_W; j++) {
+	ENSURE_INIT();
+	
+    for(int i = 0; i < draw_env.Display_H; i++) {
+        for(int j = 0; j < draw_env.Display_W; j++) {
             draw_pixel(j, i, color);
         }
     }
@@ -34,6 +46,8 @@ void clear_screen() {
 
 void draw_rectangle(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color) {
     debug_io(0x01, "Reached drawing function rect!!!");
+    ENSURE_INIT();
+    
     for(int i = x; i < x+w; i++) {
         draw_pixel(i, y, color);
         draw_pixel(i, y+h, color);
@@ -47,6 +61,8 @@ void draw_rectangle(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t col
 }
 
 void draw_filled_rectangle(size_t x, size_t y, size_t w, size_t h, uint32_t fill) {
+	ENSURE_INIT();
+	
     for(int i = 0; i < h; i++) {
         for(int j = 0; j < w; j++) {
             draw_pixel(x+j, y+i, fill);
