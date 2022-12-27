@@ -1,9 +1,9 @@
 #!/bin/bash
 echo "    --------- C Programs"
-cd test
+cd src/c
 make
 cd ..
 echo "    --------- ASM Programs"
 if [ -x "$(command -v nasm)" ]; then
-	nasm -felf32 start.asm && ld.lld-13 -Tlink.ld start.o -o start
+	nasm -felf32 src/start.asm && ld.lld-13 -Tlink.ld start.o -o start
 fi
