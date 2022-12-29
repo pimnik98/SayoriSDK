@@ -1,6 +1,6 @@
 section .text
-global _start
-_start:
+global main
+main:
 	mov eax, 0x02
 	mov ebx, 0x01
 	mov ecx, msg

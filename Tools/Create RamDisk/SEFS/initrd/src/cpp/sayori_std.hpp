@@ -1,5 +1,4 @@
 #pragma once
-
 namespace std {
 	class TTYWriter {
 		public:
@@ -7,16 +6,15 @@ namespace std {
 			~TTYWriter() {}
 
 			TTYWriter& operator<<(char* charptr) {
-				asm volatile("int 0x50" ::
-							 "a"(1),
-							 "b"(2),
+				asm volatile("int $0x50" ::
+							 "a"(2),
+							 "b"(1),
 							 "c"(charptr)
 				);
 				return *this;
 			}
-			
 	};
 
-	TTYWriter cout;
-	char endl[2] = {'\n', 0};
+	extern TTYWriter cout;
+	extern char endl[2]; // = {'\n', 0};
 }
