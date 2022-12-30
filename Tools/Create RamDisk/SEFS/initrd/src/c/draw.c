@@ -12,6 +12,7 @@ void memset(void* ptr, size_t value, size_t size) {
 }
 
 int main() {
+	draw_init();
     clear_screen();
 
     env_io(0, &my_env);
