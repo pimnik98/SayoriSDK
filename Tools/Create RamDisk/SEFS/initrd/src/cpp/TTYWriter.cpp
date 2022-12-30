@@ -1,4 +1,4 @@
-#include "sayori_std.hpp"
+#include "TTYWriter.hpp"
 
 extern "C" void atexit() {}
 

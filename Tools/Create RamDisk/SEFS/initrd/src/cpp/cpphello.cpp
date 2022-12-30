@@ -1,7 +1,7 @@
-#include "sayori_std.hpp"
+#include "TTYWriter.hpp"
 using namespace std;
 
-char hello[4] = {'H', 'i', '!', 0};
+const char hello[] = "Hello, world!!!";
 
 int main() asm("main");
 int main() {
