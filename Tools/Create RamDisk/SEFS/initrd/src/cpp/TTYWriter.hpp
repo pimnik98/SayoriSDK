@@ -5,7 +5,7 @@ namespace std {
 			TTYWriter() {}
 			~TTYWriter() {}
 
-			TTYWriter& operator<<(char* charptr) {
+			TTYWriter& operator<<(const char charptr[]) {
 				asm volatile("int $0x50" ::
 							 "a"(2),
 							 "b"(1),
