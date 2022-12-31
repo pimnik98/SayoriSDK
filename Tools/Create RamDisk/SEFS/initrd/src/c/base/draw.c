@@ -5,10 +5,10 @@
 
 char draw_initialized = 0;
 
-env_t draw_env = {};
+env_t draw_env;
 
 void draw_init() {
-	env_io(0, &draw_init);
+	env_io(0, &draw_env);
 	draw_initialized = 1;
 }
 
