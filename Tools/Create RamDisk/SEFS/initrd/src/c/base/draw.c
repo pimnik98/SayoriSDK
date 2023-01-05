@@ -5,7 +5,7 @@
 
 char draw_initialized = 0;
 
-env_t draw_env = {};
+env_t draw_env;
 
 uint32_t displ_length;
 
