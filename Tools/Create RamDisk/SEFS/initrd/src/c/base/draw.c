@@ -7,8 +7,13 @@ char draw_initialized = 0;
 
 env_t draw_env = {};
 
+uint32_t displ_length;
+
 void draw_init() {
-	env_io(0, &draw_init);
+	env_io(0, &draw_env);
+
+	displ_length = draw_env.Display_W * draw_env.Display_H;
+	
 	draw_initialized = 1;
 }
 
@@ -17,6 +22,10 @@ void _draw_pixel(size_t x, size_t y, rgb_color color) {
     _syscall(0x05, 0x00, &(screen_pixel) {
         color, x, y
     });
+    
+	// uint32_t coords = draw_env.Display_W * y + x;
+	// if(coords > displ_length) return;
+    // ((uint32_t*)draw_env.Link_Display)[coords] = PACK_INTO_RGB(color);
 }
 
 void draw_pixel(size_t x, size_t y, uint32_t color) {
