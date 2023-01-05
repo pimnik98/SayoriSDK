@@ -4,10 +4,8 @@
 #define ENSURE_INIT() if(!draw_initialized) return;
 
 char draw_initialized = 0;
-
 env_t draw_env;
-
-uint32_t displ_length;
+uint32_t displ_length = 0;
 
 void draw_init() {
 	env_io(0, &draw_env);
