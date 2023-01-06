@@ -13,6 +13,10 @@ typedef struct screen_pixel {
     uint32_t x, y;
 } screen_pixel;
 
+#define PACK_INTO_RGB(struct_px) ((struct_px.r & 0xff) << 16)  |\
+                                 ((struct_px.g & 0xff) << 8) |\
+                                  (struct_px.b & 0xff)
+
 void _draw_pixel(size_t x, size_t y, rgb_color color);
 void draw_pixel(size_t x, size_t y, uint32_t color);
 void fill_screen(uint32_t color);

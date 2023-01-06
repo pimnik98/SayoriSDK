@@ -6,7 +6,7 @@ LDFLAGS = -T ../link.ld -m elf_i386
 ASFLAGS = --32
 
 TARGETS = cpphello.o
-SOURCES = TTYWriter.o strimpl.o
+SOURCES = TTYWriter.o #strimpl.o
 
 all: link
 

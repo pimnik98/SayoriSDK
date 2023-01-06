@@ -3,7 +3,7 @@ import sys
 import struct
 
 if not sys.argv[1:]:
-    print("python3 png2raw.py image.png")
+    print("python3 png2duke.py image.png")
     exit(1)
 
 image = png.Reader(sys.argv[-1])
@@ -21,20 +21,7 @@ with open(sys.argv[-1]+".duke", 'wb') as img:
     byteng = []
     alpha = meta['alpha']
     i = 0
-    '''
-    while i<len(data):
-        if meta['alpha']: 
-            if i%3==0:
-                i+=1
-        if meta['palette']:
-            if len(meta['palette'][data[i]])==4:
-                byteng.extend(meta['palette'][data[i]][:3])
-            else:
-                byteng.extend(meta['palette'][data[i]])
-        else:
-            byteng.append(data[i])
-        i+=1
-    '''
+
     # Stage 1
     datanew = data
     if 'palette' in meta:

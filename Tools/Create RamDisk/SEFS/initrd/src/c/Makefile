@@ -7,6 +7,7 @@ ASFLAGS = --32
 
 TARGETS = main.o draw.o bsstest.o
 SOURCES = base/base.o base/display.o base/draw.o
+LIBBASE = libbase.a
 
 all: link
 
@@ -17,7 +18,10 @@ $(TARGETS): %.o : %.c
 	$(CC) $< $(CFLAGS) -c -o $@
 
 link: $(SOURCES) $(TARGETS)
-	ar crs libbase.a $(SOURCES)
+	ar crs $(LIBBASE) $(SOURCES)
 	ld $(LDFLAGS) -o  "$(shell pwd)/../../env" main.o libbase.a
 	ld $(LDFLAGS) -o  "$(shell pwd)/../../draw" draw.o libbase.a
 	ld $(LDFLAGS) -o  "$(shell pwd)/../../bsstest" bsstest.o libbase.a
+
+clean:
+	rm $(LIBBASE) $(SOURCES) || true
