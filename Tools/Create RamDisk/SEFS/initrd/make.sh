@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e 
+
 echo "    --------- C Programs"
 cd src/c
 make
