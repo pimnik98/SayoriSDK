@@ -242,6 +242,16 @@ int dirPath(char* path){
         fclose(stream);
         free(buf);
     }
+
+    long initrd_size = ftell(wstream);
+
+	printf("Summary:\n");
+	printf("\tInitrd size: %ld bytes (%ld KB, %2f MB)\n",
+		initrd_size,
+		initrd_size/1024,
+		((double)initrd_size/1024)/1024
+	);
+    
     fclose(wstream);
     free(data);
     printf("\n");
