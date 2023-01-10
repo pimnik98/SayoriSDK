@@ -17,13 +17,13 @@ void draw_init() {
 
 void _draw_pixel(size_t x, size_t y, rgb_color color) {
 	// FIXME: Syscall method is very slow! Use direct framebuffer instead!!!
-    _syscall(0x05, 0x00, &(screen_pixel) {
-        color, x, y
-    });
+    // _syscall(0x05, 0x00, &(screen_pixel) {
+        // color, x, y
+    // });
     
-	// uint32_t coords = draw_env.Display_W * y + x;
-	// if(coords > displ_length) return;
-    // ((uint32_t*)draw_env.Link_Display)[coords] = PACK_INTO_RGB(color);
+	uint32_t coords = draw_env.Display_W * y + x;
+	if(coords > displ_length) return;
+    ((uint32_t*)draw_env.Link_Display)[coords] = PACK_INTO_RGB(color);
 }
 
 void draw_pixel(size_t x, size_t y, uint32_t color) {
