@@ -10,13 +10,14 @@
 #include "base.h"
 #include <env.h>
 
-void* _syscall(size_t num, size_t p1, size_t p2) {
+void* _syscall(size_t num, size_t p1, size_t p2, size_t p3) {
   void *result;
   asm volatile("int $0x50"
                : "=a"(result)
                : "a"(num),
                  "b"(p1),
-                 "c"(p2));
+                 "c"(p2),
+                 "d"(p3));
   return result;
 }
 
@@ -36,8 +37,8 @@ struct env* env_io(size_t Data1, size_t Data2) {
   debug_io(1, "Data2: ");
   debug_io(2, Data2);
   debug_io(1, "================");
-  debug_io(2, _syscall(0x03, Data1, Data2));
-  return _syscall(0x03, Data1, Data2);
+  debug_io(2, _syscall(0x03, Data1, Data2, 0));
+  return _syscall(0x03, Data1, Data2, 0);
 }
 
 void debug_io(size_t Data1, size_t Data2) {
@@ -48,7 +49,7 @@ void debug_io(size_t Data1, size_t Data2) {
                  "b"(Data1),
                  "c"(Data2));
   */
-  _syscall(0x04, Data1, Data2);
+  _syscall(0x04, Data1, Data2, 0);
 }
 
 void __BaseInit(int argc, char *argv[])
