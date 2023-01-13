@@ -18,7 +18,7 @@ typedef	unsigned int	uint32_t;
 typedef	unsigned char	uint8_t;
 struct sefs_file_header
 {
-   uint8_t index;             ///< Индекс
+   uint32_t index;             ///< Индекс
    uint32_t magic;       ///< Магическое число для проверки ошибок.
    char name[128];            ///< Имя файла
    uint32_t offset;           ///< Смещение в sefs, указывающее откуда начинается файл.
