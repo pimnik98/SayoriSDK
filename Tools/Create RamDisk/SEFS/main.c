@@ -18,7 +18,7 @@ typedef	unsigned int	uint32_t;
 typedef	unsigned char	uint8_t;
 struct sefs_file_header
 {
-   uint8_t index;             ///< Индекс
+   uint32_t index;             ///< Индекс
    uint32_t magic;       ///< Магическое число для проверки ошибок.
    char name[128];            ///< Имя файла
    uint32_t offset;           ///< Смещение в sefs, указывающее откуда начинается файл.
@@ -242,6 +242,16 @@ int dirPath(char* path){
         fclose(stream);
         free(buf);
     }
+
+    long initrd_size = ftell(wstream);
+
+	printf("Summary:\n");
+	printf("\tInitrd size: %ld bytes (%ld KB, %2f MB)\n",
+		initrd_size,
+		initrd_size/1024,
+		((double)initrd_size/1024)/1024
+	);
+    
     fclose(wstream);
     free(data);
     printf("\n");
