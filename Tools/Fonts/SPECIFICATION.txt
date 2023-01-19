@@ -1,0 +1,10 @@
+Sayori Font File - SFF
+
+
+Header:
+
+Offset  |  Bytes  | Description
+
+   0    |   SFF   | Magic bytes to identify
+        | (ascii) | Sayori Font File.
+
