@@ -8,3 +8,11 @@ Offset  |  Bytes  | Description
    0    |   SFF   | Magic bytes to identify
         | (ascii) | Sayori Font File.
 
+   3    |  (u8)   | Width of glyph
+   
+   4    |  (u8)   | Height of glyph
+
+   5    | To end  | DUKE Image*
+
+* - DUKE Image should have height of one glyph
+    and width of (glyph width * glyph count)
