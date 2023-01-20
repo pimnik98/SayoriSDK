@@ -2,7 +2,15 @@
 
 from PIL import Image, ImageFont, ImageDraw
 
-Alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯйцукенгшщзхъфывапролджэячсмитьбюё!«№;%:?*()_+-=@#$^&[]{}<>|\\/QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890.,";
+ENG = ''.join([chr(i) for i in range(ord('A'), ord('Z')+1)])
+ENG_low = ENG.lower()
+
+RUS = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+RUS_low = RUS.lower()
+
+SYMBOLS = ".,!«№;%:?*()_+-=@#$^&[]{}<>|\\/~"
+
+Alphabet = ENG + ENG_low + RUS + RUS_low + SYMBOLS 
 
 # use a truetype font
 font = ImageFont.truetype("font.ttf", 16)
@@ -18,8 +26,4 @@ print(dir(font))
 
 draw.text((0, 0), Alphabet, font=font, fill=(0, 0, 0))
 
-# remove unneccessory whitespaces if needed
-# im=im.crop(im.getbbox())
-
-# write into file
 im.save("font.png")
