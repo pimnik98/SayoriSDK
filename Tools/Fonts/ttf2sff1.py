@@ -8,7 +8,6 @@ import dukelib
 import struct
 import os
 
-<<<<<<< HEAD:Tools/Fonts/main.py
 ENG = ''.join([chr(i) for i in range(ord('A'), ord('Z')+1)])
 ENG_low = ENG.lower()
 
@@ -18,14 +17,11 @@ RUS_low = RUS.lower()
 SYMBOLS = ".,!«№;%:?*()_+-=@#$^&[]{}<>|\\/~"
 
 Alphabet = ENG + ENG_low + RUS + RUS_low + SYMBOLS 
-=======
-Alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯйцукенгшщзхъфывапролджэячсмитьбюё!«№;%:?*()_+-=@#$^&[]{}<>|\\/QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890.,";
 VERSION  = 1
 
 if not sys.argv[1:]:
     print("No arguments: .ttf file")
     exit(1)
->>>>>>> d21935d316a5da74fea35e8d4a1d48b40dee00a5:Tools/Fonts/ttf2sff1.py
 
 # use a truetype font
 font = ImageFont.truetype(sys.argv[1], 16)
@@ -42,9 +38,6 @@ draw.rectangle([0, 0, *size], fill=(0xff, 0xff, 0xff));
 
 draw.text((0, 0), Alphabet, font=font, fill=(0, 0, 0))
 
-<<<<<<< HEAD:Tools/Fonts/main.py
-im.save("font.png")
-=======
 # remove unneccessory whitespaces if needed
 # im=im.crop(im.getbbox())
 
@@ -61,4 +54,3 @@ with open("font.sff1", "wb") as dk:
 os.remove("tmp_font.png")
 
 print("OK")
->>>>>>> d21935d316a5da74fea35e8d4a1d48b40dee00a5:Tools/Fonts/ttf2sff1.py
