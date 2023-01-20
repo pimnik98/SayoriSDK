@@ -11,8 +11,12 @@ import os
 Alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯйцукенгшщзхъфывапролджэячсмитьбюё!«№;%:?*()_+-=@#$^&[]{}<>|\\/QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890.,";
 VERSION  = 1
 
+if not sys.argv[1:]:
+    print("No arguments: .ttf file")
+    exit(1)
+
 # use a truetype font
-font = ImageFont.truetype("font.ttf", 16)
+font = ImageFont.truetype(sys.argv[1], 16)
 
 size = font.getbbox(Alphabet)[2:]
 
