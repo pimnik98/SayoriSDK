@@ -1,20 +1,28 @@
 # https://stackoverflow.com/questions/2672144/dump-characters-glyphs-from-truetype-font-ttf-into-bitmaps
+# Duke to SFF font converter by NDRAEY 2023
 
 from PIL import Image, ImageFont, ImageDraw
+import sys
+sys.path.insert(0, "../Duke/DukePy/")  # To import DukeLIB
+import dukelib
+import struct
+import os
 
 Alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯйцукенгшщзхъфывапролджэячсмитьбюё!«№;%:?*()_+-=@#$^&[]{}<>|\\/QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890.,";
+VERSION  = 1
 
 # use a truetype font
 font = ImageFont.truetype("font.ttf", 16)
 
-size = font.getsize(Alphabet)
+size = font.getbbox(Alphabet)[2:]
+
+glyph_box = (8, size[1])  # edit ASAP
 
 im = Image.new("RGB", size)
 draw = ImageDraw.Draw(im)
 
 draw.rectangle([0, 0, *size], fill=(0xff, 0xff, 0xff));
 
-print(dir(font))
 
 draw.text((0, 0), Alphabet, font=font, fill=(0, 0, 0))
 
@@ -22,4 +30,15 @@ draw.text((0, 0), Alphabet, font=font, fill=(0, 0, 0))
 # im=im.crop(im.getbbox())
 
 # write into file
-im.save("font.png")
+im.save("tmp_font.png")
+
+fontdata = dukelib.png2duke("tmp_font.png")
+
+with open("font.sff1", "wb") as dk:
+    dk.write(struct.pack("<3bbbb", *("SFF".encode("utf-8")), VERSION, *glyph_box))
+    dk.write(fontdata)
+    dk.close()
+
+os.remove("tmp_font.png")
+
+print("OK")
