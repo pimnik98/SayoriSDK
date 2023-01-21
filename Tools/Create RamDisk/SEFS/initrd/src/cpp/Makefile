@@ -1,5 +1,7 @@
 # Флаги компилятора языка C
-CFLAGS  = -nostdinc -nostdlib -fno-builtin -fno-stack-protector -m32 -g -Iinclude/ -O0 -ffreestanding -Wall -fno-use-cxa-atexit -fno-use-init-array -fno-exceptions 
+
+# Снят флаг -fno-use-init-array
+CFLAGS  = -nostdinc -nostdlib -fno-builtin -fno-stack-protector -m32 -g -Iinclude/ -O0 -ffreestanding -Wall -fno-use-cxa-atexit  -fno-exceptions
 # Флаги компоновщика
 LDFLAGS = -T ../link.ld -m elf_i386
 # Флаги ассемблера
