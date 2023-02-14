@@ -11,7 +11,7 @@
 #include <env.h>
 #include <draw.h>
 
-//char* hello = "Huomenta myös sinulle, Drew Pavlenko, KIITOS TODELLA!!!\n";
+// char* hello = "Huomenta myös sinulle, Drew Pavlenko, KIITOS TODELLA!!!\n";
 
 int main(int argc, char* argv[]){
     // Делаем настройку окружения
