@@ -53,7 +53,6 @@ void clear_screen() {
 }
 
 void draw_rectangle(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color) {
-    debug_io(0x01, "Reached drawing function rect!!!");
     ENSURE_INIT();
     
     for(int i = x; i < x+w; i++) {
@@ -64,8 +63,7 @@ void draw_rectangle(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t col
     for(int j = y; j < y+h; j++) {
         draw_pixel(x, j, color);
         draw_pixel(x+w, j, color);
-    }
-    
+    }    
 }
 
 void draw_filled_rectangle(size_t x, size_t y, size_t w, size_t h, uint32_t fill) {
