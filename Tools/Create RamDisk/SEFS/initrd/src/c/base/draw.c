@@ -24,7 +24,11 @@ void _draw_pixel(size_t x, size_t y, rgb_color color) {
     
 	uint32_t coords = draw_env.Display_W * y + x;
 	if(coords > displ_length) return;
+	
     ((uint32_t*)(draw_env.Link_Display))[coords] = PACK_INTO_RGB(color);
+    // ((uint8_t*)(draw_env.Link_Display))[coords + 0] = color.r;
+    // ((uint8_t*)(draw_env.Link_Display))[coords + 1] = color.g;
+    // ((uint8_t*)(draw_env.Link_Display))[coords + 2] = color.b;
 }
 
 void draw_pixel(size_t x, size_t y, uint32_t color) {
