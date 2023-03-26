@@ -7,6 +7,7 @@
  * @copyright Copyright SayoriOS Team (c) 2022
  */
 
+#include <base.h>
 #include <stdint.h>
 #include <env.h>
 #include <draw.h>
@@ -15,7 +16,11 @@
 
 int main(int argc, char* argv[]){
     // Делаем настройку окружения
-    __BaseInit(argc, argv);    
+    // int code = 0;
+// 
+	// _syscall(0x07, 0, &code, 0);
+// 
+    // debug_putint(code);
 
     return 1;
 }

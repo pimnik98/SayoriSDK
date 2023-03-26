@@ -12,6 +12,7 @@ main:
 	int 0x50
 
 	mov eax, 0
+	leave
 	ret
 
 section .data
