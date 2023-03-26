@@ -11,9 +11,10 @@ main:
 	mov ecx, msg2
 	int 0x50
 
-	;mov eax, 0
+	mov eax, 0
+	leave
 	ret
 
-section .rodata
+section .data
 msg: db "Hello World!!!", 10, 0
 msg2: db "Another day in paradise...", 10, 0

@@ -1,3 +1,4 @@
+#include <base.h>
 #include "draw.h"
 #include "env.h"
 
@@ -8,7 +9,7 @@ env_t draw_env;
 uint32_t displ_length = 0;
 
 void draw_init() {
-	env_io(0, &draw_env);
+	env_io(0, (size_t)(&draw_env));
 
 	displ_length = draw_env.Display_W * draw_env.Display_H;
 	
@@ -23,7 +24,11 @@ void _draw_pixel(size_t x, size_t y, rgb_color color) {
     
 	uint32_t coords = draw_env.Display_W * y + x;
 	if(coords > displ_length) return;
-    ((uint32_t*)draw_env.Link_Display)[coords] = PACK_INTO_RGB(color);
+	
+    ((uint32_t*)(draw_env.Link_Display))[coords] = PACK_INTO_RGB(color);
+    // ((uint8_t*)(draw_env.Link_Display))[coords + 0] = color.r;
+    // ((uint8_t*)(draw_env.Link_Display))[coords + 1] = color.g;
+    // ((uint8_t*)(draw_env.Link_Display))[coords + 2] = color.b;
 }
 
 void draw_pixel(size_t x, size_t y, uint32_t color) {
@@ -52,7 +57,6 @@ void clear_screen() {
 }
 
 void draw_rectangle(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color) {
-    debug_io(0x01, "Reached drawing function rect!!!");
     ENSURE_INIT();
     
     for(int i = x; i < x+w; i++) {
@@ -63,8 +67,7 @@ void draw_rectangle(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t col
     for(int j = y; j < y+h; j++) {
         draw_pixel(x, j, color);
         draw_pixel(x+w, j, color);
-    }
-    
+    }    
 }
 
 void draw_filled_rectangle(size_t x, size_t y, size_t w, size_t h, uint32_t fill) {
@@ -78,5 +81,5 @@ void draw_filled_rectangle(size_t x, size_t y, size_t w, size_t h, uint32_t fill
 }
 
 void screen_update() {
-    _syscall(0x05, 0x01, 0);
+    _syscall(0x05, 0x01, 0, 0);
 }

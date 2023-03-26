@@ -31,13 +31,6 @@ struct env* env_io(size_t Data1, size_t Data2) {
                  "c"(Data2));
   return Data;
   */
-  debug_io(1, "================");
-  debug_io(1, "Data1: ");
-  debug_io(2, Data1);
-  debug_io(1, "Data2: ");
-  debug_io(2, Data2);
-  debug_io(1, "================");
-  debug_io(2, _syscall(0x03, Data1, Data2, 0));
   return _syscall(0x03, Data1, Data2, 0);
 }
 
@@ -52,16 +45,24 @@ void debug_io(size_t Data1, size_t Data2) {
   _syscall(0x04, Data1, Data2, 0);
 }
 
+void debug_puts(const char str[]) {
+	debug_io(0x01, (size_t)str);
+}
+
+void debug_putint(int num) {
+	debug_io(0x00, num);
+}
+
 void __BaseInit(int argc, char *argv[])
 {
-  debug_io(0x01, "App ARGC:");
-  debug_io(0x00, argc);
+  debug_puts("App ARGC:");
+  debug_putint(argc);
   for (int i = 0; i < argc; i++) {
-    debug_io(0x01, argv[i]);
+    debug_puts(argv[i]);
   }
   
   struct env *e = env_io(0x00, 0x00);
   
-  debug_io(0x01, "Base Init...");
+  debug_puts("Base Init...");
   __DisplayInit();
 }

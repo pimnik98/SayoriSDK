@@ -8,7 +8,7 @@
  */
 
 #include <stdint.h>
-
+#include <base.h>
 
 /**
  * @brief Вызов драйвера экрана
@@ -16,8 +16,8 @@
  * @warning Рекомендуется вызывать только для базового модуля управления
  */
 void __DisplayInit(){
-    debug_io(0x01,"Display Init...");
-    int DisplayAddr = (int) env_io(0x01,0x00);
-    debug_io(0x00,DisplayAddr);
-    debug_io(0x02,DisplayAddr);
+    debug_puts("Display Init...");
+    int DisplayAddr = (int)env_io(0x01,0x00);
+    debug_io(0x00 ,DisplayAddr);
+    debug_io(0x02, DisplayAddr);
 }
