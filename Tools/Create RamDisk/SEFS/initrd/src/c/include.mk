@@ -6,5 +6,5 @@ LDFLAGS = -T ../link.ld -m elf_i386
 ASFLAGS = --32
 
 TARGETS = main.o draw.o memtest.o
-SOURCES = base/base.o base/display.o base/draw.o
+SOURCES = base/base.o base/display.o base/draw.o base/kbd.o
 LIBBASE = libbase.a
