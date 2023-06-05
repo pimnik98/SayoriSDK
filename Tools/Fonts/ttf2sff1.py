@@ -15,8 +15,6 @@ import os
 Alphabet = alphabet.Alphabet
 VERSION  = 1
 
-print(Alphabet)
-
 if not sys.argv[1:]:
     print("No arguments: .ttf file")
     exit(1)
@@ -30,6 +28,8 @@ glyph_box = (size[0] // len(Alphabet), size[1])
 
 im = Image.new("RGB", size)
 draw = ImageDraw.Draw(im)
+
+draw.rectangle([0, 0, *size], fill=(0xff, 0xff, 0xff));
 
 draw.fontmode = "1"  # Disable antialiasing
 
@@ -52,7 +52,6 @@ with open(wfn, "wb") as dk:
     dk.write(fontdata)
     dk.close()
 
-# os.remove("tmp_font.png")
+os.remove("tmp_font.png")
 
-print(wfn)
 print("OK")
