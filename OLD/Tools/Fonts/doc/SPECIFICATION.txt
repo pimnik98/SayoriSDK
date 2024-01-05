@@ -1,0 +1,20 @@
+Sayori Font File - SFF
+
+
+V1 Header:
+
+Offset  |  Bytes  | Description
+
+   0    |   SFF   | Magic bytes to identify
+        | (ascii) | Sayori Font File.
+
+   3    |  (u8)   | Version of font spec
+
+   4    |  (u8)   | Width of glyph
+   
+   5    |  (u8)   | Height of glyph
+   
+   6    | To end  | DUKE Image*
+
+* - DUKE Image should have height of one glyph
+    and width of (glyph width * glyph count)
