@@ -13,3 +13,10 @@ size_t ticks() {
             0
             );
 }
+
+void wait_ticks(size_t ticks_num) {
+    // Sleep for ticks_num ticks.
+    size_t current = ticks();
+
+    while(ticks() - current < ticks_num);
+}
