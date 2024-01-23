@@ -7,6 +7,7 @@
 #include "stdint.h"
 
 #define TIMER_GET_TICKS_SYSCALL 14
+#define TIMER_SLEEP_SYSCALL 15
 
 size_t ticks();
-void wait_ticks(size_t ticks_num);
+void sleep(uint32_t millis);

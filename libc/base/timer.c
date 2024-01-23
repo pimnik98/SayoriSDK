@@ -14,9 +14,6 @@ size_t ticks() {
             );
 }
 
-void wait_ticks(size_t ticks_num) {
-    // Sleep for ticks_num ticks.
-    size_t current = ticks();
-
-    while(ticks() - current < ticks_num);
+void sleep(uint32_t millis) {
+    _syscall(TIMER_SLEEP_SYSCALL, millis, 0, 0);
 }
