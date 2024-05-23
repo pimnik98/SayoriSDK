@@ -452,7 +452,7 @@ void __print(const char* format, va_list args) {
     free(a);
 }
 
-void printf(char *text, ...) {
+void printf(const char *text, ...) {
     va_list args;
     va_start(args, text);
     __print(text, args);
