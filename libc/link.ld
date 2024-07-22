@@ -1,5 +1,5 @@
 OUTPUT_FORMAT(elf32-i386)
-ENTRY(main)
+ENTRY(__init_everything)
 
 SECTIONS {
     . = 0x20000000;
