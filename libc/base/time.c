@@ -10,7 +10,7 @@ sayori_time_t get_time() {
 	
     _syscall(
             DATETIME_SYSCALL,
-            &time,
+            (size_t)&time,
             0,
             0
             );

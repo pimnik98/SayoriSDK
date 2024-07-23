@@ -10,7 +10,7 @@
  * @return - В случае успеха индекс триггера, в противном случае -1
  */
 int TriggerReg(int type,trigger_cmd_t handler) {
-    int w = _syscall(SYSCALL_TRIGGER_REG, (int) type, (trigger_cmd_t) handler, 0);
+    int w = _syscall(SYSCALL_TRIGGER_REG, (int) type, (int) handler, 0);
     return w;
 }
 
