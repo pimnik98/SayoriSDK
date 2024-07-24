@@ -1,0 +1,22 @@
+// -*- C++ -*-
+
+#pragma once
+
+#include "string"
+#include "ios"
+
+namespace std {
+	class fstream {
+	public:
+		fstream(const string& filename, size_t mode) {
+			_filename = filename;
+			mode = mode;
+		}
+		~fstream() {
+			// TODO: Close file
+		}
+	private:
+		string _filename;
+		size_t _mode;
+	};
+}

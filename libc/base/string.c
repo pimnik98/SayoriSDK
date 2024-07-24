@@ -87,7 +87,7 @@ uint32_t UTFConvert(char c, char c1){
  * @return size_t - Длину символов
  */
 size_t strlen(const char *str){
-    if(str == nullptr) {
+    if(str == NULL) {
         return 0;
     }
 

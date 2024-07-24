@@ -3,6 +3,8 @@ extern "C" {
 #include "../../libc/include/memory.h"
 }
 
+#include "memory"
+
 void* operator new(size_t size) {
     return malloc(size);
 }

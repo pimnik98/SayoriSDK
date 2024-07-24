@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include "stddef.h"
+#include "stdbool.h"
+
 SAYORI_INLINE bool isdigit(char a) {
     return a >= '0' && a <= '9';
 }
@@ -15,7 +18,7 @@ uint32_t UTFConvert(char c, char c1);
 size_t strlen(const char *str);
 size_t mb_strlen(const char *str);
 size_t struntil(const char* str, const char find);
-void* memcpy(void *restrict destination, const void *restrict source, size_t n);
+void* memcpy(void* /*restrict*/ destination, const void* /*restrict*/ source, size_t n);
 void* memset(void* ptr, char value, size_t num);
 void* memmove(void *dest, void *src, size_t count);
 int strcmp(const char *s1, const char *s2);
@@ -27,7 +30,7 @@ int32_t strncmp(const char *s1, const char *s2, size_t num);
 char *strtok(char *s, const char *delim);
 char *strncpy(char *dest, const char *src, size_t n);
 char* strcat(char* destination, const char* source);
-void substr(char* restrict dest, const char* restrict source, int from, int length);
+void substr(char* /*restrict*/ dest, const char* /*restrict*/ source, int from, int length);
 char *strchr(const char *_s, char _c);
 void strtolower(char* as);
 void strtoupper(char* as);
