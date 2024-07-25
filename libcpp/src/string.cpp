@@ -27,7 +27,7 @@ string::~string() {
     free(string_container);
 }
 
-const char *string::AsCharPtr() const {
+const char *string::c_str() const {
     return string_container;
 }
 
@@ -44,7 +44,7 @@ void string::Append(const char* charptr) {
 }
 
 void string::Append(const string &str) {
-    Append(str.AsCharPtr());
+    Append(str.c_str());
 }
 
 void string::Append(char character) {
@@ -120,6 +120,17 @@ char string::operator[](int index) {
 
     return string_container[index];
 }
+
+bool operator==(const char* charptr) {
+	return strcmp(string_container, charptr) == 0;
+}
+
+bool operator!=(const char* charptr) {
+	return strcmp(string_container, charptr) != 0;
+}
+
+
+/*
 string::string(const string &str) {
     this->string_container = (char*)calloc(str.length + 1, 1);
 
@@ -127,3 +138,4 @@ string::string(const string &str) {
 
     this->length = str.length;
 }
+*/

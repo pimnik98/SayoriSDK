@@ -29,20 +29,4 @@ namespace std {
 	};
 }
 
-//#include <map>
 
-int main(int argc, char** argv) {
-	map<string, int> mapt;
-
-	mapt["yksi"]  = 1;
-	mapt["kaksi"] = 2;
-	mapt["kolme"] = 3;
-	mapt["neljä"] = 4;
-	mapt["viisi"] = 5;
-
-	printf("Yksi: %d\n", mapt["yksi"]);
-	printf("Kolme: %d\n", mapt["kolme"]);
-	printf("Neljä: %d\n", mapt["neljä"]);
-
-	return 0;
-}

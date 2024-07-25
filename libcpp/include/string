@@ -13,38 +13,41 @@ extern "C" {
 }
 
 namespace std {
-class string {
-public:
-    string();
-    string(const char* charptr);
-    string(const string& str);
-    ~string();
+	class string {
+	public:
+	    string();
+	    string(const char* charptr);
+	    string(const string& str) = default;
+	    ~string();
 
-    [[nodiscard]] char * begin() const;
-    [[nodiscard]] char * end() const;
+	    [[nodiscard]] char * begin() const;
+	    [[nodiscard]] char * end() const;
 
-    const char* AsCharPtr() const;
-    void Append(const string &str);
-    void Append(const char *charptr);
-    void Append(char character);
-    string Slice(int start = 0, int sting_length = -1);
+	    const char* c_str() const;
+	    void Append(const string &str);
+	    void Append(const char *charptr);
+	    void Append(char character);
+	    string Slice(int start = 0, int sting_length = -1);
 
-    static string FromInt(int number, int base = 10);
-    static string FromUInt(size_t number, int base, bool uppercase = false);
+	    static string FromInt(int number, int base = 10);
+	    static string FromUInt(size_t number, int base, bool uppercase = false);
 
-    static string Format(const char* format, ...);
-    static string FormatVaArgs(const char *format, va_list args);
+	    static string Format(const char* format, ...);
+	    static string FormatVaArgs(const char *format, va_list args);
 
-    string& operator =(const char* charptr);
-    string& operator +(const char* charptr);
-    string& operator +=(const char* charptr);
-    string& operator +=(const string& str);
-    char operator[](int index);
+	    string& operator =(const char* charptr);
+	    string& operator +(const char* charptr);
+	    string& operator +=(const char* charptr);
+	    string& operator +=(const string& str);
+	    char operator[](int index);
 
-private:
-    char* string_container = nullptr;
-    int length = 0;
-};
+	    bool operator==(const char* charptr);
+	    bool operator!=(const char* charptr);
+
+	private:
+	    char* string_container = nullptr;
+	    int length = 0;
+	};
 
 }
 
