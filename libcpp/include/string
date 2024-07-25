@@ -29,11 +29,7 @@ namespace std {
 	    void Append(char character);
 	    string Slice(int start = 0, int sting_length = -1);
 
-	    static string FromInt(int number, int base = 10);
-	    static string FromUInt(size_t number, int base, bool uppercase = false);
-
-	    static string Format(const char* format, ...);
-	    static string FormatVaArgs(const char *format, va_list args);
+		bool empty() const;
 
 	    string& operator =(const char* charptr);
 	    string& operator +(const char* charptr);

@@ -14,7 +14,7 @@ namespace std {
 		size = 0;
 		capacity = 1;
 
-		container = calloc(capacity, 1);
+		container = (T*)calloc(capacity, 1);
 	    }
 
 	    ~vector() {

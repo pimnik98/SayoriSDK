@@ -3,6 +3,7 @@
 //
 
 #include "string"
+#include <algorithm>
 
 extern "C" {
 	#include "../../libc/include/memory.h"
@@ -51,9 +52,13 @@ void string::Append(char character) {
     string_container = (char*)realloc(string_container, length + 2);
 
     string_container[length] = character;
-    string_container[length + 1] = 0;
+	string_container[length + 1] = 0;
 
     length++;
+}
+
+bool string::empty() const {
+	return length == 0;
 }
 
 string string::Slice(int start, int slice_length) {
