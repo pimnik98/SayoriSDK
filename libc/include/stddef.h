@@ -1,6 +1,8 @@
 #ifndef SAYORISDK_STDDEF_H
 #define SAYORISDK_STDDEF_H
 
+#define SAYORIOS
+
 #define NULL (0)
 
 #define SAYORI_INLINE static inline __attribute__((always_inline))

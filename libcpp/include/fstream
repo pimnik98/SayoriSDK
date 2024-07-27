@@ -5,18 +5,32 @@
 #include "string"
 #include "ios"
 
+extern "C" {
+	#include "../../libc/include/file.h"
+}
+
 namespace std {
 	class fstream {
 	public:
 		fstream(const string& filename, size_t mode) {
 			_filename = filename;
-			mode = mode;
+			_mode = mode;
+		
+			_fd = fd_open(filename.c_str(), mode);
 		}
+
+		void write(const char* data, size_t size) {
+			fd_write(_fd, size, 1, data);
+		}
+
 		~fstream() {
 			// TODO: Close file
+			fd_close(_fd);
 		}
 	private:
 		string _filename;
 		size_t _mode;
+
+		size_t _fd;
 	};
 }

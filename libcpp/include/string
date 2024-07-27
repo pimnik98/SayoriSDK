@@ -31,6 +31,8 @@ namespace std {
 
 		bool empty() const;
 
+		size_t length() const;
+
 	    string& operator =(const char* charptr);
 	    string& operator +(const char* charptr);
 	    string& operator +=(const char* charptr);
@@ -42,7 +44,7 @@ namespace std {
 
 	private:
 	    char* string_container = nullptr;
-	    int length = 0;
+	    int _length = 0;
 	};
 
 }
