@@ -31,6 +31,10 @@ const char *string::c_str() const {
     return string_container;
 }
 
+char *string::data() const {
+    return string_container;
+}
+
 void string::Append(const char* charptr) {
     auto append__length = strlen(charptr);
 
@@ -54,6 +58,12 @@ void string::Append(char character) {
 	string_container[_length + 1] = 0;
 
     _length++;
+}
+
+void string::resize(size_t size) {
+    string_container = (char*)realloc(string_container, size + 1);
+
+    _length = size;
 }
 
 bool string::empty() const {
@@ -127,6 +137,10 @@ char string::operator[](int index) {
 
 bool operator==(string& str, const char* charptr) {
 	return strcmp(str.c_str(), charptr) == 0;
+}
+
+bool operator==(string& str, const string& string) {
+	return strcmp(str.c_str(), string.c_str()) == 0;
 }
 
 bool operator!=(string& str, const char* charptr) {

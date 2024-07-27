@@ -12,7 +12,7 @@ extern "C" {
 namespace std {
 	class fstream {
 	public:
-		fstream(const string& filename, size_t mode) {
+		fstream(const string& filename, size_t mode = O_READ) {
 			_filename = filename;
 			_mode = mode;
 		

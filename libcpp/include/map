@@ -19,7 +19,7 @@ namespace std {
 			}
 
 			// If element does not exist, create new default pair.
-			_table.push_back(MyPair(key, ValueType{}));
+			_table.push_back(pair {key, ValueType{}});
 			
 			return _table.back().second;
 		}

@@ -15,6 +15,6 @@ namespace std {
 
 		static const size_t in = 1;
 		static const size_t out = 2;
-		static const size_t bin = 64;
+		static const size_t binary = 64;
 	};
 }

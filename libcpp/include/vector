@@ -11,68 +11,72 @@ namespace std {
 	class vector {
 	public:
 	    vector() {
-		size = 0;
-		capacity = 1;
+		_size = 0;
+		_capacity = 1;
 
-		container = (T*)calloc(capacity, 1);
+		_container = (T*)calloc(_capacity, 1);
 	    }
 
 	    ~vector() {
-		free(container);
+		free(_container);
 	    }
 
-	    void Append(const T& element) {
-		if(size + 1 >= capacity) {
-		    capacity = capacity == 0 ? 1 : 2 * capacity;
+	    void push_back(const T& element) {
+		if(_size + 1 >= _capacity) {
+		    _capacity = _capacity == 0 ? 1 : 2 * _capacity;
 
-		    container = (T*)realloc(container, capacity * sizeof(T));
+		    _container = (T*)realloc(_container, _capacity * sizeof(T));
 		}
 
-		container[size] = element;
+		_container[_size] = element;
 
-		size++;
+		_size++;
 	    }
 
-	    void Remove(int index) {
-		for (size_t i = index; i < size - 1; ++i) {
-		    container[i] = container[i + 1];
+	    void remove_at(int index) {
+		for (size_t i = index; i < _size - 1; ++i) {
+		    _container[i] = _container[i + 1];
 		}
 
-		--size;
+		--_size;
 	    }
 
-	    bool Empty() {
-		return size == 0;
+	    bool empty() {
+		return _size == 0;
 	    }
 
-	    size_t Size() {
+	    size_t size() {
 		return size;
 	    }
 
-	    T* Raw() {
-		return container;
+	    T* data() {
+		return _container;
 	    }
 
 	    T* begin() {
-		return container;
+		return _container;
 	    }
 
 	    T* end() {
-		return container + size;
+		return _container + _size;
 	    }
 
+		T& back() {
+			return *end();
+		}
+
 	    T& operator[](size_t index) {
-		if(index >= size) {
+		if(index >= _size) {
 			// TODO: Panic here
 			return *end();
 		}
 
-		return container[index];
+		return _container[index];
 	    }
 
 	private:
-	    T* container;
-	    size_t size;
-	    size_t capacity;
+	    T* _container;
+	    size_t _size;
+	    size_t _capacity;
 	};
 }

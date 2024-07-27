@@ -17,8 +17,6 @@ namespace std {
 			first = pair.first;
 			second = pair.second;
 
-			printf("S: %d\n", pair.second);
-
 			return *this;
 		}
 	};

@@ -5,8 +5,8 @@ OBJS=$(CPP_COMPILE_FILES:%.cpp=%.o)
 OUT=libsayori_cpp.a
 
 all: $(OUT)
-	$(CXX) $(CPPFLAGS) testfile.cpp -c -o testfile.o
-	ld.lld -T../libc/link.ld testfile.o $(OUT) ../libc/libsayori_c.a -o filetest
+	$(CXX) $(CPPFLAGS) testvec.cpp -c -o vec.o
+	ld.lld -T../libc/link.ld vec.o $(OUT) ../libc/libsayori_c.a -o vec
 
 clean:
 	-rm $(OBJS)

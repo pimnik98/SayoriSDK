@@ -24,6 +24,9 @@ namespace std {
 	    [[nodiscard]] char * end() const;
 
 	    const char* c_str() const;
+	    char* data() const;
+	    
+		void resize(size_t new_size);
 	    void Append(const string &str);
 	    void Append(const char *charptr);
 	    void Append(char character);
@@ -34,12 +37,17 @@ namespace std {
 		size_t length() const;
 
 	    string& operator =(const char* charptr);
+	    
 	    string& operator +(const char* charptr);
+	    
 	    string& operator +=(const char* charptr);
 	    string& operator +=(const string& str);
+	    
 	    char operator[](int index);
 
 	    bool operator==(const char* charptr);
+	    bool operator==(const string& string);
+
 	    bool operator!=(const char* charptr);
 
 	private:
