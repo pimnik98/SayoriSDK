@@ -1,0 +1,82 @@
+// -*- C++ -*-
+
+#pragma once
+
+extern "C" {
+	#include "../../libc/include/memory.h"
+}
+
+namespace std {
+	template<typename T>
+	class vector {
+	public:
+	    vector() {
+		_size = 0;
+		_capacity = 1;
+
+		_container = (T*)calloc(_capacity, 1);
+	    }
+
+	    ~vector() {
+		free(_container);
+	    }
+
+	    void push_back(const T& element) {
+		if(_size + 1 >= _capacity) {
+		    _capacity = _capacity == 0 ? 1 : 2 * _capacity;
+
+		    _container = (T*)realloc(_container, _capacity * sizeof(T));
+		}
+
+		_container[_size] = element;
+
+		_size++;
+	    }
+
+	    void remove_at(int index) {
+		for (size_t i = index; i < _size - 1; ++i) {
+		    _container[i] = _container[i + 1];
+		}
+
+		--_size;
+	    }
+
+	    bool empty() {
+		return _size == 0;
+	    }
+
+	    size_t size() {
+		return size;
+	    }
+
+	    T* data() {
+		return _container;
+	    }
+
+	    T* begin() {
+		return _container;
+	    }
+
+	    T* end() {
+		return _container + _size;
+	    }
+
+		T& back() {
+			return *end();
+		}
+
+	    T& operator[](size_t index) {
+		if(index >= _size) {
+			// TODO: Panic here
+			return *end();
+		}
+
+		return _container[index];
+	    }
+
+	private:
+	    T* _container;
+	    size_t _size;
+	    size_t _capacity;
+	};
+}

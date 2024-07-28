@@ -1,0 +1,32 @@
+// -*- C++ -*-
+
+#include "pair"
+
+using namespace std;
+
+namespace std {
+	template <typename KeyType, typename ValueType>
+	class map {
+	public:
+		map() = default;
+		~map() = default;
+
+		ValueType& operator[](const KeyType& key) {
+			for(auto& i : _table) {
+				if(i.first == key) {
+					return i.second;
+				}
+			}
+
+			// If element does not exist, create new default pair.
+			_table.push_back(pair {key, ValueType{}});
+			
+			return _table.back().second;
+		}
+
+	private:
+		vector<pair<KeyType, ValueType>> _table;
+	};
+}
+
+

@@ -1,0 +1,20 @@
+// -*- C++ -*-
+
+#pragma once
+
+extern "C" {
+	#include "../../libc/include/stdint.h"
+}
+
+namespace std {
+	class ios {
+	public:
+		static const size_t beg = 0;
+		static const size_t cur = 1;
+		static const size_t end = 2;
+
+		static const size_t in = 1;
+		static const size_t out = 2;
+		static const size_t binary = 64;
+	};
+}

@@ -6,41 +6,54 @@
 
 #pragma once
 
-#include "memory.hpp"
+#include "memory"
+
+extern "C" {
+	#include <stdarg.h>
+}
 
 namespace std {
-class string {
-public:
-    String();
-    String(const char* charptr);
-    String(const String& str);
-    ~String();
+	class string {
+	public:
+	    string();
+	    string(const char* charptr);
+	    string(const string& str) = default;
+	    ~string();
 
-    [[nodiscard]] char * begin() const;
-    [[nodiscard]] char * end() const;
+	    [[nodiscard]] char * begin() const;
+	    [[nodiscard]] char * end() const;
 
-    const char* AsCharPtr() const;
-    void Append(const String &str);
-    void Append(const char *charptr);
-    void Append(char character);
-    String Slice(int start = 0, int sting_length = -1);
+	    const char* c_str() const;
+	    char* data() const;
+	    
+		void resize(size_t new_size);
+	    void Append(const string &str);
+	    void Append(const char *charptr);
+	    void Append(char character);
+	    string Slice(int start = 0, int sting_length = -1);
 
-    static String FromInt(int number, int base = 10);
-    static String FromUInt(size_t number, int base, bool uppercase = false);
+		bool empty() const;
 
-    static String Format(const char* format, ...);
-    static String FormatVaArgs(const char *format, va_list args);
+		size_t length() const;
 
-    String& operator =(const char* charptr);
-    String& operator +(const char* charptr);
-    String& operator +=(const char* charptr);
-    String& operator +=(const String& str);
-    char operator[](int index);
+	    string& operator =(const char* charptr);
+	    
+	    string& operator +(const char* charptr);
+	    
+	    string& operator +=(const char* charptr);
+	    string& operator +=(const string& str);
+	    
+	    char operator[](int index);
 
-private:
-    char* string_container = nullptr;
-    int length = 0;
-};
+	    bool operator==(const char* charptr);
+	    bool operator==(const string& string);
+
+	    bool operator!=(const char* charptr);
+
+	private:
+	    char* string_container = nullptr;
+	    int _length = 0;
+	};
 
 }
 
